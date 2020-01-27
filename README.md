@@ -1,5 +1,5 @@
 # Day-of-Week
-Python function accepts mm/dd/yy and outputs day of week as string and integer. Any date since 1600.
+Python function accepts mm/dd/yyyy and outputs day of week as string and integer. Any date since 1600.
 
 This Python algorithm is based upon one provided by Dr. Arthur Benjamin of Harvey Mudd College.
 It is explained in his lecture in The Great Courses course "The Secrets of Mental Math" and his book
