@@ -15,18 +15,17 @@ def get_day_of_week(month, date, year): # integers as input. Leading zeros are o
 
     is_a_leap = bool( (year % 4 == 0 and year % 100 != 0) or year % 400 == 0)
     day_list = ("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
-#    month_code_vals = (6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4)
-    #             Month code tuples include a day-of-week offset for that month and the number of days in that month.
-    #                   Jan     Feb     March   April   May     June    July    Aug     Sept    Oct     Nov     Dec
-    month_code_vals = ([6,31], [2,29], [2,31], [5,30], [0,31], [3,30], [5,31], [1,31], [4,30], [6,31], [2,30], [4,31])
-    century_list = (0,5,3,1,0)
-    if date>month_code_vals[month-1][1]:  # Check date for valid range for that month
+    #               Jan  Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+    days_in_month = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    month_codes   = [6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4]  # These codes describe the day offset since first of year
+    century_list = [0, 5, 3, 1, 0]
+    if date>days_in_month[month-1]:  # Check date for valid range for that month
         return("Invalid date", 9)         # Your program can check for error code 9 as an invalid date number
 
     century_code = century_list[(year // 100) - 16] # No Gregorian calendar before 17th century, and not in all countries
     year_code = century_code + ((year % 100) // 4) + (year % 100) # number of leaps this century plus year number
-    month_code = month_code_vals[month-1][0]
-    if is_a_leap and month<2: # Leap year: For January and February the leap hasn't happened yet, so decrement month code
+    month_code = int(month_codes[month-1])
+    if is_a_leap and month<3: # Leap year: For January and February the leap hasn't happened yet, so decrement month code
         month_code -=1
     day_number = (year_code + month_code + date) % 7
     day_of_week = day_list[day_number]
