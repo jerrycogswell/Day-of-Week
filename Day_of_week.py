@@ -14,17 +14,25 @@ def get_day_of_week(month, date, year): # integers as input. Leading zeros are o
     assert int(year) > 1599, "No Gregorian calendar before 1600 for most countries, even later for others."
 
     is_a_leap = bool( (year % 4 == 0 and year % 100 != 0) or year % 400 == 0)
+    century_list = [0, 5, 3, 1, 0]    # 17th through 21st centuries (1600 - 2099)
     day_list = ("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
     #               Jan  Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-    days_in_month = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    month_codes   = [6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4]  # These codes describe the day offset since first of year
-    century_list = [0, 5, 3, 1, 0]
-    if date>days_in_month[month-1]:  # Check date for valid range for that month
-        return("Invalid date", 9)         # Your program can check for error code 9 as an invalid date number
+    #days_in_month = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    #month_codes   = [6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4]  # These codes describe the day offset since first of year
+    month_dict = {1 : (31,6), 2 : (28,2), 3 : (31,2), # key is month. value is tuple of days_in_month and month_code
+                  4 : (30,5), 5 : (31,0), 6 : (30,3),
+                  7 : (31,5), 8 : (31,1), 9 : (30,4),
+                  10: (31,6), 11: (30,2), 12: (31,4)
+    }
+
+    days_in_month, month_code = month_dict[month]
+    if month ==2 and is_a_leap:
+        days_in_month += 1
+    if date>days_in_month:  # Check date for valid range for that month
+        return("Invalid date", 9)         # Your program can check for error code 9 as an invalid day number
 
     century_code = century_list[(year // 100) - 16] # No Gregorian calendar before 17th century, and not in all countries
     year_code = century_code + ((year % 100) // 4) + (year % 100) # number of leaps this century plus year number
-    month_code = int(month_codes[month-1])
     if is_a_leap and month<3: # Leap year: For January and February the leap hasn't happened yet, so decrement month code
         month_code -=1
     day_number = (year_code + month_code + date) % 7
